@@ -1,0 +1,2422 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="artifact-type" content="narrative">
+  <meta name="design-style" content="nocturne">
+  <title>Luciano Corso — Consulenza Qualità, Ambiente e Sostenibilità</title>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..700;1,400..600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+
+      /* Page and surfaces: Prussian midnight steps */
+      --background: #0a101d;
+      --surface-container-low: #0e1626;
+      --surface-container: #111b2e;
+      --surface-container-high: #17243c;
+
+      /* Glassmorphism layers */
+      --glass-bg: rgba(17, 27, 46, 0.64);
+      --glass-bg-elevated: rgba(23, 36, 60, 0.72);
+      --glass-nav-bg: rgba(10, 16, 29, 0.68);
+      --glass-border-blue: rgba(124, 196, 232, 0.22);
+      --glass-border-gold: rgba(223, 170, 91, 0.34);
+
+      /* Text */
+      --on-surface: #f2ece1;
+      --on-surface-variant: #9ba8bf;
+
+      /* Borders */
+      --outline: #384d73;
+      --outline-variant: #21304d;
+
+      /* Accents: Gold & Blue */
+      --primary: #dfaa5b;
+      --on-primary: #0a101d;
+      --primary-container: #2b261c;
+      --on-primary-container: #f5dcb0;
+      --secondary: #687a99;
+      --tertiary: #7cc4e8;
+      --error: #f27474;
+      --on-error: #1a0606;
+
+      /* Semantic */
+      --positive: #52d19c;
+      --warning: #e07a5f;
+      --focus: #dfaa5b;
+
+      /* Data series */
+      --data-1: #dfaa5b;
+      --data-2: #7cc4e8;
+      --data-3: #52d19c;
+      --data-4: #e07a5f;
+      --data-context: #4a5d80;
+
+      /* Fonts */
+      --font-headline: 'EB Garamond', serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      --font-label: 'JetBrains Mono', monospace;
+
+      /* Type scale */
+      --display-size: clamp(2.15rem, 1.45rem + 2.8vw, 2.75rem);
+      --headline-size: clamp(1.5rem, 1.2rem + 1.1vw, 1.85rem);
+      --subhead-size: clamp(1.0625rem, 0.98rem + 0.3vw, 1.2rem);
+      --body-size: 1rem;
+      --label-size: 0.75rem;
+
+      /* Shape */
+      --rounded: 0.375rem;
+      --rounded-lg: 0.875rem;
+      --rounded-xl: 1.25rem;
+      --rounded-full: 9999px;
+
+      /* Effects */
+      --hairline: 1px solid var(--outline-variant);
+      --hairline-strong: 1px solid var(--outline);
+      --panel-highlight: inset 0 1px 0 rgba(242, 236, 225, 0.08);
+      --brass-glow: radial-gradient(circle at 86% 10%, rgba(223, 170, 91, 0.14), transparent 52%);
+      --blue-glow: radial-gradient(circle at 14% 28%, rgba(124, 196, 232, 0.12), transparent 56%);
+      --ambient-mesh: radial-gradient(circle at 50% 0%, rgba(23, 36, 60, 0.85), var(--background) 70%);
+      --border-conic: conic-gradient(from 0deg, transparent 0deg, var(--primary) 55deg, var(--tertiary) 120deg, transparent 190deg, rgba(223, 170, 91, 0.45) 260deg, transparent 360deg);
+      --heading-tracking: -0.015em;
+      --label-tracking: 0.06em;
+      --sky-tint: color-mix(in srgb, var(--tertiary) 12%, transparent);
+      --sky-hover: color-mix(in srgb, var(--tertiary) 8%, transparent);
+      --brass-tint: color-mix(in srgb, var(--primary) 14%, transparent);
+      --positive-tint: color-mix(in srgb, var(--positive) 14%, transparent);
+      --error-tint: color-mix(in srgb, var(--error) 14%, transparent);
+      --viewport-grad: linear-gradient(180deg, rgba(14, 22, 38, 0.48) 0%, rgba(10, 16, 29, 0.72) 100%);
+      --glow-gold: 0 0 18px rgba(223, 170, 91, 0.25);
+      --glow-blue: 0 0 14px rgba(124, 196, 232, 0.16);
+      --node-glow: 0 0 10px rgba(223, 170, 91, 0.5);
+      --nav-shadow: 0 12px 32px rgba(5, 8, 16, 0.55);
+
+      /* Spacing scale (4pt base) */
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2.25rem;
+      --space-2xl: 3.5rem;
+      --space-nav-clear: 6.75rem;
+
+      /* Motion */
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+      --dur-micro: 140ms;
+      --dur-short: 240ms;
+      --dur-long: 480ms;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body {
+      overflow-x: clip;
+      margin: 0;
+      padding: 0;
+      scroll-behavior: smooth;
+    }
+    body {
+      background-color: var(--background);
+      background-image: var(--brass-glow), var(--blue-glow), var(--ambient-mesh);
+      background-attachment: fixed;
+      color: var(--on-surface);
+      font-family: var(--font-body);
+      font-size: var(--body-size);
+      line-height: 1.62;
+      -webkit-font-smoothing: antialiased;
+    }
+    header { position: static !important; }
+
+    /* Focus rings */
+    :focus-visible {
+      outline: 2px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    /* Smartphone vertical viewport frame */
+    .phone-viewport {
+      width: 100%;
+      max-width: 460px;
+      margin: 0 auto;
+      min-height: 100vh;
+      position: relative;
+      padding: var(--space-md) var(--space-md) var(--space-nav-clear);
+      border-left: var(--hairline);
+      border-right: var(--hairline);
+      background: var(--viewport-grad);
+    }
+
+    @media (max-width: 640px) {
+      .phone-viewport {
+        border-left: none;
+        border-right: none;
+        padding: var(--space-sm) var(--space-md) var(--space-nav-clear);
+      }
+    }
+
+    /* Fixed top micro-status bar inside the mobile column (non-sticky header rule respected: header is static, this is a compact progress pill) */
+    .scroll-telemetry {
+      position: fixed;
+      top: var(--space-sm);
+      right: max(var(--space-md), calc(50% - 214px));
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+      padding: var(--space-xs) var(--space-sm);
+      border-radius: var(--rounded-full);
+      background: var(--glass-nav-bg);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--glass-border-blue);
+      box-shadow: var(--panel-highlight);
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      color: var(--tertiary);
+      pointer-events: none;
+    }
+
+    .progress-ring-svg {
+      width: 22px;
+      height: 22px;
+      transform: rotate(-90deg);
+    }
+
+    .progress-ring-track {
+      fill: none;
+      stroke: var(--outline-variant);
+      stroke-width: 2.5;
+    }
+
+    .progress-ring-fill {
+      fill: none;
+      stroke: var(--primary);
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-dasharray: 50.26;
+      stroke-dashoffset: 50.26;
+      transition: stroke-dashoffset var(--dur-micro) var(--ease-out);
+    }
+
+    /* Typography helpers */
+    .title-display {
+      font-family: var(--font-headline);
+      font-size: var(--display-size);
+      font-weight: 500;
+      line-height: 1.08;
+      letter-spacing: var(--heading-tracking);
+      color: var(--on-surface);
+      margin: 0;
+    }
+    .title-display em {
+      font-style: italic;
+      color: var(--primary);
+      font-weight: 400;
+    }
+
+    .section-title {
+      font-family: var(--font-headline);
+      font-size: var(--headline-size);
+      font-weight: 500;
+      line-height: 1.12;
+      letter-spacing: var(--heading-tracking);
+      color: var(--on-surface);
+      margin: 0;
+    }
+    .section-title em {
+      font-style: italic;
+      color: var(--primary);
+      font-weight: 400;
+    }
+
+    .deck-brass {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      letter-spacing: var(--label-tracking);
+      text-transform: uppercase;
+      color: var(--primary);
+      margin: 0 0 var(--space-xs);
+      display: block;
+    }
+
+    .coord-label {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      letter-spacing: var(--label-tracking);
+      text-transform: uppercase;
+      color: var(--tertiary);
+    }
+
+    .lede {
+      color: var(--on-surface-variant);
+      font-size: var(--body-size);
+      margin: var(--space-sm) 0 0;
+      max-width: 65ch;
+    }
+
+    /* Sections flow */
+    .story-section {
+      margin-top: var(--space-2xl);
+      position: relative;
+      scroll-margin-top: var(--space-lg);
+    }
+
+    .section-header {
+      margin-bottom: var(--space-md);
+      padding-bottom: var(--space-sm);
+      border-bottom: var(--hairline);
+    }
+
+    /* Hero Header */
+    .hero-header {
+      position: relative;
+      padding: var(--space-lg) var(--space-md) var(--space-lg);
+      border-radius: var(--rounded-xl);
+      background: var(--glass-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid var(--glass-border-blue);
+      box-shadow: var(--panel-highlight);
+      overflow: hidden;
+      margin-top: var(--space-sm);
+    }
+
+    #telemetry-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      min-height: 220px;
+      pointer-events: none;
+      opacity: 0.42;
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .identity-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      padding: var(--space-xs) var(--space-sm);
+      border-radius: var(--rounded-full);
+      background: var(--sky-tint);
+      border: 1px solid var(--glass-border-blue);
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      color: var(--tertiary);
+      margin-bottom: var(--space-md);
+    }
+
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: var(--rounded-full);
+      background: var(--positive);
+      animation: statusPulse 2.2s var(--ease-in-out) infinite;
+    }
+
+    @keyframes statusPulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.45; transform: scale(1.25); }
+    }
+
+    /* Dedicated Section Illustrations */
+    .illustration-well {
+      position: relative;
+      background: var(--background);
+      border: var(--hairline);
+      border-radius: var(--rounded-lg);
+      padding: var(--space-md);
+      margin: var(--space-md) 0;
+      overflow: hidden;
+      box-shadow: var(--panel-highlight);
+    }
+
+    .illustration-caption {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: var(--space-xs);
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      color: var(--on-surface-variant);
+    }
+
+    .sec-svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    /* CSS/SVG Animations (GPU-safe transform / opacity + SVG stroke-dashoffset) */
+    @keyframes spinSlow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    @keyframes spinReverse {
+      from { transform: rotate(360deg); }
+      to { transform: rotate(0deg); }
+    }
+    @keyframes floatSoft {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-4px); }
+    }
+    @keyframes drawStroke {
+      0% { stroke-dashoffset: 240; opacity: 0.3; }
+      50% { stroke-dashoffset: 0; opacity: 1; }
+      100% { stroke-dashoffset: 0; opacity: 1; }
+    }
+    @keyframes scanSweep {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes borderOrbit {
+      0% { transform: translate(-50%, -50%) rotate(0deg); }
+      100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    .svg-orbit-cw {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: spinSlow 24s linear infinite;
+    }
+    .svg-orbit-ccw {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: spinReverse 18s linear infinite;
+    }
+    .svg-float {
+      animation: floatSoft 4s var(--ease-in-out) infinite;
+    }
+    .svg-draw-line {
+      stroke-dasharray: 240;
+      stroke-dashoffset: 240;
+      animation: drawStroke 3.2s var(--ease-out) infinite alternate;
+    }
+    .svg-radar-sweep {
+      transform-box: fill-box;
+      transform-origin: 50% 50%;
+      animation: scanSweep 6s linear infinite;
+    }
+
+    /* Animated Border Cards (Glassmorphism + GPU-safe rotating gradient border) */
+    .animated-card {
+      position: relative;
+      border-radius: var(--rounded-lg);
+      padding: 1.5px;
+      overflow: hidden;
+      background: var(--outline-variant);
+      transition: transform var(--dur-short) var(--ease-out);
+    }
+
+    .animated-card::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 220%;
+      height: 220%;
+      background: var(--border-conic);
+      animation: borderOrbit 7s linear infinite;
+      opacity: 0.65;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .animated-card:hover::before,
+    .animated-card:focus-within::before {
+      opacity: 1;
+    }
+
+    .animated-card-inner {
+      position: relative;
+      z-index: 1;
+      border-radius: calc(var(--rounded-lg) - 1.5px);
+      background: var(--glass-bg-elevated);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: var(--panel-highlight);
+      padding: var(--space-md);
+      height: 100%;
+    }
+
+    /* Subtle stagger for card border rotation */
+    .animated-card.delay-1::before { animation-delay: -1.8s; }
+    .animated-card.delay-2::before { animation-delay: -3.6s; }
+    .animated-card.delay-3::before { animation-delay: -5.2s; }
+
+    /* KPI Strip Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-sm);
+      margin-top: var(--space-md);
+    }
+
+    .kpi-value {
+      font-family: var(--font-headline);
+      font-size: 1.75rem;
+      font-weight: 500;
+      line-height: 1.05;
+      color: var(--primary);
+      font-variant-numeric: tabular-nums;
+      margin: var(--space-xs) 0 0;
+    }
+
+    .kpi-caption {
+      font-size: 0.8125rem;
+      color: var(--on-surface-variant);
+      margin-top: var(--space-xs);
+      line-height: 1.35;
+    }
+
+    /* Buttons */
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+      margin-top: var(--space-md);
+    }
+
+    .btn-primary,
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-xs);
+      min-height: 44px;
+      padding: 0 var(--space-md);
+      border-radius: var(--rounded);
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      font-weight: 500;
+      letter-spacing: var(--label-tracking);
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color var(--dur-micro) var(--ease-out), transform var(--dur-micro) var(--ease-out), box-shadow var(--dur-micro) var(--ease-out);
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--on-primary);
+      border: 1px solid var(--primary);
+    }
+    .btn-primary:hover {
+      background-color: var(--on-primary-container);
+      box-shadow: var(--glow-gold);
+    }
+    .btn-primary:active { transform: translateY(1px); }
+
+    .btn-secondary {
+      background-color: var(--glass-bg);
+      color: var(--on-surface);
+      border: var(--hairline-strong);
+      backdrop-filter: blur(10px);
+    }
+    .btn-secondary:hover {
+      background-color: var(--surface-container-high);
+      box-shadow: var(--glow-blue);
+    }
+    .btn-secondary:active { transform: translateY(1px); }
+
+    /* Cards Stack */
+    .card-stack {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    .service-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--space-sm);
+    }
+
+    .service-num {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      color: var(--primary);
+      background: var(--brass-tint);
+      border: 1px solid var(--glass-border-gold);
+      padding: 2px var(--space-sm);
+      border-radius: var(--rounded);
+      flex-shrink: 0;
+    }
+
+    .card-title {
+      font-family: var(--font-headline);
+      font-size: 1.3rem;
+      font-weight: 500;
+      color: var(--on-surface);
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .card-body {
+      font-size: 0.9375rem;
+      color: var(--on-surface-variant);
+      margin: var(--space-xs) 0 0;
+      line-height: 1.55;
+    }
+
+    /* Interactive Diagnostic Widget */
+    .diagnostic-box {
+      margin-top: var(--space-lg);
+    }
+
+    .chip-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+      margin-top: var(--space-xs);
+    }
+
+    .filter-chip {
+      min-height: 44px;
+      padding: var(--space-xs) var(--space-md);
+      border-radius: var(--rounded-full);
+      background: var(--surface-container);
+      border: var(--hairline);
+      color: var(--on-surface-variant);
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      transition: background-color var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out), box-shadow var(--dur-micro) var(--ease-out);
+    }
+
+    .filter-chip:hover {
+      background: var(--surface-container-high);
+      color: var(--on-surface);
+    }
+
+    .filter-chip[aria-pressed="true"] {
+      background: var(--brass-tint);
+      color: var(--primary);
+      box-shadow: inset 0 0 0 1px var(--primary);
+    }
+
+    .diagnostic-result {
+      margin-top: var(--space-md);
+      padding: var(--space-md);
+      border-radius: var(--rounded);
+      background: var(--background);
+      border: 1px solid var(--glass-border-gold);
+    }
+
+    /* Processes list */
+    .process-list {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-sm);
+      margin-top: var(--space-md);
+    }
+
+    .process-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-sm);
+      padding: var(--space-sm) var(--space-md);
+      border-radius: var(--rounded);
+      background: var(--glass-bg);
+      border: var(--hairline);
+      backdrop-filter: blur(12px);
+      transition: opacity var(--dur-short) var(--ease-out), transform var(--dur-short) var(--ease-out);
+    }
+
+    .process-item.is-hidden {
+      display: none;
+    }
+
+    .process-name {
+      font-size: 0.9375rem;
+      color: var(--on-surface);
+      line-height: 1.4;
+    }
+
+    .sector-tag {
+      font-family: var(--font-label);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: var(--rounded);
+      background: var(--sky-tint);
+      color: var(--tertiary);
+      border: 1px solid var(--glass-border-blue);
+      flex-shrink: 0;
+    }
+
+    /* Project Case Studies */
+    .metric-pills {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-xs);
+      margin-top: var(--space-sm);
+    }
+
+    .metric-pill {
+      padding: var(--space-xs) var(--space-sm);
+      border-radius: var(--rounded);
+      background: var(--background);
+      border: var(--hairline);
+    }
+
+    .metric-pill strong {
+      display: block;
+      font-family: var(--font-label);
+      font-size: 0.9375rem;
+      color: var(--primary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .metric-pill span {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--on-surface-variant);
+      line-height: 1.3;
+    }
+
+    .expand-btn {
+      margin-top: var(--space-sm);
+      min-height: 44px;
+      width: 100%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--space-sm);
+      background: var(--surface-container-low);
+      border: var(--hairline);
+      border-radius: var(--rounded);
+      color: var(--tertiary);
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      text-transform: uppercase;
+      letter-spacing: var(--label-tracking);
+      cursor: pointer;
+      transition: background-color var(--dur-micro) var(--ease-out);
+    }
+    .expand-btn:hover { background: var(--surface-container-high); }
+
+    .expand-panel {
+      margin-top: var(--space-sm);
+      padding-top: var(--space-sm);
+      border-top: var(--hairline);
+      font-size: 0.9rem;
+      color: var(--on-surface-variant);
+    }
+    .expand-panel[hidden] { display: none; }
+
+    /* Timeline (Percorso) */
+    .timeline-rail {
+      position: relative;
+      padding-left: var(--space-lg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    .timeline-rail::before {
+      content: "";
+      position: absolute;
+      left: 7px;
+      top: 6px;
+      bottom: 6px;
+      width: 2px;
+      background: linear-gradient(180deg, var(--primary) 0%, var(--tertiary) 60%, var(--outline-variant) 100%);
+    }
+
+    .timeline-node {
+      position: relative;
+    }
+
+    .timeline-node::before {
+      content: "";
+      position: absolute;
+      left: calc(-1 * var(--space-lg) + 2px);
+      top: 14px;
+      width: 12px;
+      height: 12px;
+      border-radius: var(--rounded-full);
+      background: var(--background);
+      border: 2px solid var(--primary);
+      box-shadow: var(--node-glow);
+    }
+
+    .timeline-node.past::before {
+      border-color: var(--tertiary);
+      box-shadow: none;
+    }
+
+    .timeline-period {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      color: var(--tertiary);
+    }
+
+    /* Competences & Certificates */
+    .badge-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-xs);
+      margin-top: var(--space-sm);
+    }
+
+    .spec-badge {
+      font-family: var(--font-label);
+      font-size: 0.75rem;
+      padding: 4px 8px;
+      border-radius: var(--rounded);
+      background: var(--sky-tint);
+      color: var(--on-surface);
+      border: 1px solid var(--glass-border-blue);
+    }
+
+    .spec-badge.gold {
+      background: var(--brass-tint);
+      color: var(--on-primary-container);
+      border-color: var(--glass-border-gold);
+    }
+
+    .cert-table-wrap {
+      overflow-x: auto;
+      margin-top: var(--space-sm);
+    }
+
+    .cert-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+    .cert-table th {
+      text-align: left;
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      text-transform: uppercase;
+      letter-spacing: var(--label-tracking);
+      color: var(--primary);
+      padding: var(--space-xs) var(--space-xs);
+      border-bottom: var(--hairline-strong);
+    }
+    .cert-table td {
+      padding: var(--space-sm) var(--space-xs);
+      border-bottom: var(--hairline);
+      color: var(--on-surface-variant);
+      vertical-align: top;
+    }
+    .cert-table td:first-child {
+      font-family: var(--font-label);
+      color: var(--tertiary);
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    .cert-table td strong {
+      color: var(--on-surface);
+      font-weight: 600;
+      display: block;
+    }
+
+    /* FAQ Accordion */
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    .faq-item {
+      border-radius: var(--rounded-lg);
+      background: var(--glass-bg);
+      border: var(--hairline);
+      backdrop-filter: blur(14px);
+      overflow: hidden;
+    }
+
+    .faq-trigger {
+      width: 100%;
+      min-height: 48px;
+      padding: var(--space-sm) var(--space-md);
+      background: transparent;
+      border: none;
+      color: var(--on-surface);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-sm);
+      cursor: pointer;
+    }
+    .faq-trigger:hover { background: var(--surface-container-high); }
+
+    .faq-chevron {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      color: var(--primary);
+      transition: transform var(--dur-short) var(--ease-out);
+    }
+    .faq-trigger[aria-expanded="true"] .faq-chevron {
+      transform: rotate(180deg);
+    }
+
+    .faq-answer {
+      padding: 0 var(--space-md) var(--space-md);
+      font-size: 0.9rem;
+      color: var(--on-surface-variant);
+      border-top: var(--hairline);
+      padding-top: var(--space-sm);
+    }
+    .faq-answer[hidden] { display: none; }
+
+    /* Contact Form */
+    .form-grid {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+      margin-top: var(--space-md);
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+
+    .field-label {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      text-transform: uppercase;
+      letter-spacing: var(--label-tracking);
+      color: var(--tertiary);
+    }
+
+    .field-input,
+    .field-select,
+    .field-textarea {
+      width: 100%;
+      min-height: 44px;
+      padding: 0.65rem 0.85rem;
+      border-radius: var(--rounded);
+      background: var(--background);
+      border: var(--hairline-strong);
+      color: var(--on-surface);
+      font-family: inherit;
+      font-size: 0.95rem;
+    }
+
+    .field-select {
+      padding-right: 2.25rem;
+    }
+
+    .field-textarea {
+      min-height: 96px;
+      resize: vertical;
+    }
+
+    .form-feedback {
+      margin-top: var(--space-sm);
+      padding: var(--space-sm) var(--space-md);
+      border-radius: var(--rounded);
+      font-size: 0.875rem;
+    }
+    .form-feedback.is-error {
+      background: var(--error-tint);
+      border: 1px solid var(--error);
+      color: var(--error);
+    }
+    .form-feedback.is-success {
+      background: var(--positive-tint);
+      border: 1px solid var(--positive);
+      color: var(--positive);
+    }
+    .form-feedback[hidden] { display: none; }
+
+    .contact-channel {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-sm);
+      padding: var(--space-sm) var(--space-md);
+      border-radius: var(--rounded);
+      background: var(--background);
+      border: var(--hairline);
+    }
+
+    .copy-mini-btn {
+      min-height: 44px;
+      padding: 0 var(--space-sm);
+      border-radius: var(--rounded);
+      background: var(--brass-tint);
+      border: 1px solid var(--glass-border-gold);
+      color: var(--primary);
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      cursor: pointer;
+    }
+    .copy-mini-btn:hover { background: var(--primary-container); }
+
+    /* Fixed Transparent Bottom Glassmorphism Menu with SVG Icons */
+    .bottom-nav {
+      position: fixed;
+      bottom: var(--space-sm);
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 1.5rem);
+      max-width: 440px;
+      z-index: 50;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 2px;
+      padding: var(--space-xs);
+      border-radius: var(--rounded-xl);
+      background: var(--glass-nav-bg);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border: 1px solid var(--glass-border-blue);
+      box-shadow: var(--panel-highlight), var(--nav-shadow);
+    }
+
+    .nav-item {
+      min-height: 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      padding: var(--space-xs) 2px;
+      border: none;
+      border-radius: var(--rounded-lg);
+      background: transparent;
+      color: var(--on-surface-variant);
+      font-family: var(--font-label);
+      font-size: 0.65rem;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      transition: background-color var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out);
+    }
+
+    .nav-item:hover {
+      color: var(--on-surface);
+      background: var(--sky-hover);
+    }
+
+    .nav-item.is-active {
+      color: var(--primary);
+      background: var(--brass-tint);
+      box-shadow: inset 0 0 0 1px var(--glass-border-gold);
+    }
+
+    .nav-item svg {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.75;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* Scroll reveal utility */
+    .reveal {
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity var(--dur-long) var(--ease-out), transform var(--dur-long) var(--ease-out);
+    }
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    footer {
+      margin-top: var(--space-2xl);
+      padding-top: var(--space-md);
+      border-top: var(--hairline);
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      color: var(--on-surface-variant);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Scroll Progress Ring (SVG stroke-dashoffset technique) -->
+  <div class="scroll-telemetry" aria-hidden="true">
+    <svg class="progress-ring-svg" viewBox="0 0 22 22">
+      <circle class="progress-ring-track" cx="11" cy="11" r="8" />
+      <circle id="scroll-ring-fill" class="progress-ring-fill" cx="11" cy="11" r="8" />
+    </svg>
+    <span id="scroll-pct-label">0%</span>
+  </div>
+
+  <div class="phone-viewport">
+    <main>
+
+      <!-- ================================================================ -->
+      <!-- 1. HERO / PANORAMICA                                              -->
+      <!-- ================================================================ -->
+      <header id="sec-hero" class="hero-header">
+        <canvas id="telemetry-canvas" aria-hidden="true"></canvas>
+        <div class="hero-content">
+          <div class="identity-pill">
+            <span class="pulse-dot" aria-hidden="true"></span>
+            <span>Torino · Italia &amp; Estero · P.IVA</span>
+          </div>
+
+          <span class="deck-brass">Luciano Corso · Consulente Senior</span>
+          <h1 class="title-display">
+            Qualità, <em>Ambiente</em> e Sostenibilità in stabilimento.
+          </h1>
+          <p class="lede">
+            Oltre 18 anni nel controllo qualità dei processi produttivi nei settori autoveicolistico, ferroviario e delle energie rinnovabili. Dai fornitori alla linea, fino alla certificazione.
+          </p>
+
+          <!-- Dedicated Illustration 1: Precision Observatory Compass -->
+          <div class="illustration-well">
+            <svg class="sec-svg" viewBox="0 0 360 150" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs>
+                <linearGradient id="goldBlueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#dfaa5b" />
+                  <stop offset="100%" stop-color="#7cc4e8" />
+                </linearGradient>
+              </defs>
+              <!-- Coordinate Grid -->
+              <g stroke="#21304d" stroke-width="0.75">
+                <line x1="20" y1="75" x2="340" y2="75" stroke-dasharray="3 3" />
+                <line x1="180" y1="12" x2="180" y2="138" stroke-dasharray="3 3" />
+                <circle cx="180" cy="75" r="54" fill="none" />
+              </g>
+              <!-- Rotating Outer Brass Ring -->
+              <g class="svg-orbit-cw">
+                <circle cx="180" cy="75" r="46" fill="none" stroke="#dfaa5b" stroke-width="1.2" stroke-dasharray="14 6 3 6" />
+                <circle cx="226" cy="75" r="3" fill="#dfaa5b" />
+                <circle cx="134" cy="75" r="3" fill="#7cc4e8" />
+              </g>
+              <!-- Counter-rotating Inner Blue Ring -->
+              <g class="svg-orbit-ccw">
+                <circle cx="180" cy="75" r="30" fill="none" stroke="#7cc4e8" stroke-width="1.3" stroke-dasharray="8 5" />
+                <polygon points="180,41 184,48 176,48" fill="#7cc4e8" />
+              </g>
+              <!-- Core Quality Diamond -->
+              <polygon points="180,58 197,75 180,92 163,75" fill="rgba(223,170,91,0.14)" stroke="url(#goldBlueGrad)" stroke-width="1.5" />
+              <circle cx="180" cy="75" r="5" fill="#dfaa5b" />
+              <!-- Side Telemetry Readouts -->
+              <g font-family="JetBrains Mono, monospace" font-size="8" fill="#9ba8bf">
+                <text x="16" y="26" fill="#7cc4e8">IATF 16949</text>
+                <text x="16" y="38">VDA 6.3 · VDA 6.5</text>
+                <text x="16" y="128" fill="#dfaa5b">LAT 45.07° N</text>
+                <text x="276" y="26" fill="#52d19c">ISO 14001</text>
+                <text x="276" y="38">ISO 45001 · ESG</text>
+                <text x="276" y="128" fill="#7cc4e8">LON 07.68° E</text>
+              </g>
+            </svg>
+            <div class="illustration-caption">
+              <span>FIG. 01 · SISTEMA QUALITÀ &amp; AUDIT</span>
+              <span>IT · EN (C1) · FR (B1)</span>
+            </div>
+          </div>
+
+          <!-- KPI 2x2 Animated Border Cards -->
+          <div class="kpi-grid">
+            <div class="animated-card">
+              <div class="animated-card-inner">
+                <span class="coord-label">Esperienza</span>
+                <p class="kpi-value">18+ anni</p>
+                <p class="kpi-caption">Controllo qualità e processi in stabilimento</p>
+              </div>
+            </div>
+            <div class="animated-card delay-1">
+              <div class="animated-card-inner">
+                <span class="coord-label">Settori</span>
+                <p class="kpi-value">3 filiere</p>
+                <p class="kpi-caption">Automotive, ferroviario ed energie rinnovabili</p>
+              </div>
+            </div>
+            <div class="animated-card delay-2">
+              <div class="animated-card-inner">
+                <span class="coord-label">Lingue</span>
+                <p class="kpi-value">IT · EN · FR</p>
+                <p class="kpi-caption">Audit e affiancamenti in italiano e inglese</p>
+              </div>
+            </div>
+            <div class="animated-card delay-3">
+              <div class="animated-card-inner">
+                <span class="coord-label">Assetto</span>
+                <p class="kpi-value">Dal 2024</p>
+                <p class="kpi-caption">Libero professionista a giornata o progetto</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <button type="button" class="btn-primary" onclick="scrollToSection('sec-contatti')">
+              Richiedi consulenza
+            </button>
+            <button type="button" class="btn-secondary" onclick="scrollToSection('sec-test')">
+              Test rapido 1 min
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- ================================================================ -->
+      <!-- 2. SERVIZI                                                        -->
+      <!-- ================================================================ -->
+      <section id="sec-servizi" class="story-section reveal">
+        <div class="section-header">
+          <span class="deck-brass">01 · Servizi sul campo</span>
+          <h2 class="section-title">Interventi mirati <em>in stabilimento</em> per costruttori e fornitori</h2>
+          <p class="lede">
+            Supporto operativo diretto per aziende manifatturiere e società di ingegneria che necessitano di competenza tecnica immediata su un progetto o per un periodo definito.
+          </p>
+        </div>
+
+        <!-- Dedicated Illustration 2: Supply Chain Audit Radar -->
+        <div class="illustration-well">
+          <svg class="sec-svg" viewBox="0 0 360 135" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <g stroke="#21304d" stroke-width="1" fill="none">
+              <circle cx="95" cy="68" r="52" />
+              <circle cx="95" cy="68" r="34" />
+              <circle cx="95" cy="68" r="16" />
+              <line x1="35" y1="68" x2="155" y2="68" />
+              <line x1="95" y1="10" x2="95" y2="126" />
+            </g>
+            <!-- Sweeping radar needle -->
+            <g class="svg-radar-sweep">
+              <path d="M95,68 L95,16 A52,52 0 0,1 140,42 Z" fill="rgba(124,196,232,0.16)" />
+              <line x1="95" y1="68" x2="95" y2="16" stroke="#dfaa5b" stroke-width="1.6" />
+            </g>
+            <!-- Detected supplier nodes -->
+            <circle cx="118" cy="44" r="3.5" fill="#dfaa5b" />
+            <circle cx="72" cy="88" r="3.5" fill="#52d19c" />
+            <circle cx="126" cy="84" r="3.5" fill="#7cc4e8" />
+            <!-- Right diagnostic bars -->
+            <g font-family="JetBrains Mono, monospace" font-size="8.5" fill="#f2ece1">
+              <text x="175" y="30" fill="#dfaa5b">01 VDA 6.3 AUDIT</text>
+              <rect x="175" y="36" width="160" height="6" rx="3" fill="#17243c" />
+              <rect x="175" y="36" width="144" height="6" rx="3" fill="#dfaa5b" />
+
+              <text x="175" y="62" fill="#7cc4e8">02 WITNESS &amp; RESIDENT</text>
+              <rect x="175" y="68" width="160" height="6" rx="3" fill="#17243c" />
+              <rect x="175" y="68" width="136" height="6" rx="3" fill="#7cc4e8" />
+
+              <text x="175" y="94" fill="#52d19c">03 ISO / IATF / ESG</text>
+              <rect x="175" y="100" width="160" height="6" rx="3" fill="#17243c" />
+              <rect x="175" y="100" width="152" height="6" rx="3" fill="#52d19c" />
+            </g>
+          </svg>
+          <div class="illustration-caption">
+            <span>FIG. 02 · COPERTURA SUPPLY CHAIN</span>
+            <span>AUDIT · WITNESS · TEMPORANEO</span>
+          </div>
+        </div>
+
+        <div class="card-stack">
+          <article class="animated-card">
+            <div class="animated-card-inner">
+              <div class="service-head">
+                <h3 class="card-title">Audit e qualifica fornitori</h3>
+                <span class="service-num">01</span>
+              </div>
+              <p class="card-body">
+                Audit di processo VDA 6.3 e di seconda parte, valutazione di nuovi fornitori, gestione dei reclami lungo la supply chain e follow-up in stabilimento fino alla chiusura delle azioni.
+              </p>
+            </div>
+          </article>
+
+          <article class="animated-card delay-1">
+            <div class="animated-card-inner">
+              <div class="service-head">
+                <h3 class="card-title">Ispezione residente e witness test</h3>
+                <span class="service-num">02</span>
+              </div>
+              <p class="card-body">
+                Presenza in stabilimento per conto del cliente: verifiche di aspetto estetico, prove e imballo, witness dei test con rapporti puntuali, visite ai sub-fornitori. Anche per committenti esteri con fornitori in Italia.
+              </p>
+            </div>
+          </article>
+
+          <article class="animated-card delay-2">
+            <div class="animated-card-inner">
+              <div class="service-head">
+                <h3 class="card-title">Sistemi di gestione e certificazione</h3>
+                <span class="service-num">03</span>
+              </div>
+              <p class="card-body">
+                IATF 16949, ISO 9001, ISO 14001 e ISO 45001: impostazione del sistema, audit interni e preparazione del personale alla certificazione, in italiano o in inglese. Supporto sui temi ambientali ed ESG.
+              </p>
+            </div>
+          </article>
+
+          <article class="animated-card delay-3">
+            <div class="animated-card-inner">
+              <div class="service-head">
+                <h3 class="card-title">Quality Manager temporaneo</h3>
+                <span class="service-num">04</span>
+              </div>
+              <p class="card-body">
+                Copertura del ruolo di responsabile qualità, o di coordinamento qualità e produzione, per periodi definiti: reclami clienti, APQP per nuovi prodotti, laboratorio e attrezzature di prova.
+              </p>
+            </div>
+          </article>
+
+          <article class="animated-card">
+            <div class="animated-card-inner">
+              <div class="service-head">
+                <h3 class="card-title">Coaching, mentoring e training</h3>
+                <span class="service-num">05</span>
+              </div>
+              <p class="card-body">
+                Affiancamento pratico di quality engineer, responsabili qualità e team di produzione direttamente in reparto e sulla linea.
+              </p>
+            </div>
+          </article>
+        </div>
+
+        <!-- Interactive 1-Minute Service Finder -->
+        <div id="sec-test" class="animated-card diagnostic-box">
+          <div class="animated-card-inner">
+            <span class="deck-brass">Strumento interattivo · 1 minuto</span>
+            <h3 class="card-title">Non sapete quale servizio vi serve?</h3>
+            <p class="card-body">Selezionate la situazione prioritaria dello stabilimento per individuare l'intervento adatto.</p>
+
+            <div class="field-group" style="margin-top: var(--space-md);">
+              <span class="field-label">1. Esigenza principale</span>
+              <div class="chip-group" role="group" aria-label="Esigenza principale">
+                <button type="button" class="filter-chip" aria-pressed="true" data-diag="need" data-val="fornitori" onclick="setDiag('need', 'fornitori', this)">Fornitori &amp; Audit</button>
+                <button type="button" class="filter-chip" aria-pressed="false" data-diag="need" data-val="residente" onclick="setDiag('need', 'residente', this)">Controllo &amp; Witness</button>
+                <button type="button" class="filter-chip" aria-pressed="false" data-diag="need" data-val="certificazione" onclick="setDiag('need', 'certificazione', this)">ISO / IATF / ESG</button>
+                <button type="button" class="filter-chip" aria-pressed="false" data-diag="need" data-val="manager" onclick="setDiag('need', 'manager', this)">Copertura Ruolo QM</button>
+                <button type="button" class="filter-chip" aria-pressed="false" data-diag="need" data-val="team" onclick="setDiag('need', 'team', this)">Formazione Team</button>
+              </div>
+            </div>
+
+            <div class="field-group" style="margin-top: var(--space-md);">
+              <span class="field-label">2. Orizzonte temporale</span>
+              <div class="chip-group" role="group" aria-label="Orizzonte temporale">
+                <button type="button" class="filter-chip" aria-pressed="true" data-diag="duration" data-val="giorni" onclick="setDiag('duration', 'giorni', this)">Pochi giorni</button>
+                <button type="button" class="filter-chip" aria-pressed="false" data-diag="duration" data-val="mesi" onclick="setDiag('duration', 'mesi', this)">3–12 mesi</button>
+              </div>
+            </div>
+
+            <div id="diag-output" class="diagnostic-result" aria-live="polite">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================ -->
+      <!-- 3. PROCESSI E SETTORI                                             -->
+      <!-- ================================================================ -->
+      <section id="sec-processi" class="story-section reveal">
+        <div class="section-header">
+          <span class="deck-brass">02 · Processi produttivi</span>
+          <h2 class="section-title">Conosco il <em>vostro processo</em> sulla linea</h2>
+          <p class="lede">
+            Esperienza diretta in multinazionali quotate e filiere complesse su 9 famiglie tecnologiche. Filtra per settore industriale.
+          </p>
+        </div>
+
+        <!-- Dedicated Illustration 3: Industrial Process Blueprint -->
+        <div class="illustration-well">
+          <svg class="sec-svg" viewBox="0 0 360 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <!-- Precision Gear (Left) -->
+            <g class="svg-orbit-cw">
+              <circle cx="66" cy="60" r="24" fill="none" stroke="#dfaa5b" stroke-width="2" stroke-dasharray="6 4" />
+              <circle cx="66" cy="60" r="11" fill="rgba(223,170,91,0.16)" stroke="#dfaa5b" stroke-width="1.5" />
+            </g>
+            <!-- Welding / Copper Conductor Wave (Center) -->
+            <path class="svg-draw-line" d="M122,60 C142,26 162,94 182,60 C202,26 222,94 242,60" fill="none" stroke="#7cc4e8" stroke-width="2.2" />
+            <circle cx="182" cy="60" r="4" fill="#dfaa5b" />
+            <!-- SMT PCB Grid (Right) -->
+            <g stroke="#52d19c" stroke-width="1.3" fill="none">
+              <rect x="272" y="34" width="56" height="52" rx="4" fill="rgba(82,209,156,0.08)" />
+              <rect x="288" y="48" width="24" height="24" rx="2" stroke="#dfaa5b" />
+              <line x1="264" y1="46" x2="272" y2="46" />
+              <line x1="264" y1="60" x2="272" y2="60" />
+              <line x1="264" y1="74" x2="272" y2="74" />
+              <line x1="328" y1="46" x2="336" y2="46" />
+              <line x1="328" y1="60" x2="336" y2="60" />
+              <line x1="328" y1="74" x2="336" y2="74" />
+            </g>
+          </svg>
+          <div class="illustration-caption">
+            <span>FIG. 03 · MECCANICA · RAME · SMT</span>
+            <span id="process-count-label">9 processi attivi</span>
+          </div>
+        </div>
+
+        <div class="chip-group" role="group" aria-label="Filtra processi per settore">
+          <button type="button" class="filter-chip" aria-pressed="true" onclick="filterProcesses('tutti', this)">Tutti (9)</button>
+          <button type="button" class="filter-chip" aria-pressed="false" onclick="filterProcesses('automotive', this)">Automotive</button>
+          <button type="button" class="filter-chip" aria-pressed="false" onclick="filterProcesses('ferroviario', this)">Ferroviario</button>
+          <button type="button" class="filter-chip" aria-pressed="false" onclick="filterProcesses('energia', this)">Energie rinnovabili</button>
+        </div>
+
+        <div id="process-list" class="process-list">
+          <div class="process-item" data-sectors="automotive ferroviario">
+            <span class="process-name">Lavorazioni meccaniche di precisione su materiali ferrosi e leghe di alluminio</span>
+            <span class="sector-tag">Auto · Rail</span>
+          </div>
+          <div class="process-item" data-sectors="automotive ferroviario">
+            <span class="process-name">Componenti di sicurezza</span>
+            <span class="sector-tag">Auto · Rail</span>
+          </div>
+          <div class="process-item" data-sectors="automotive ferroviario energia">
+            <span class="process-name">Saldatura</span>
+            <span class="sector-tag">Tutti</span>
+          </div>
+          <div class="process-item" data-sectors="automotive ferroviario">
+            <span class="process-name">Verniciatura (a polvere e a liquido) e cataforesi</span>
+            <span class="sector-tag">Auto · Rail</span>
+          </div>
+          <div class="process-item" data-sectors="automotive ferroviario">
+            <span class="process-name">Trattamenti termici e galvanici</span>
+            <span class="sector-tag">Auto · Rail</span>
+          </div>
+          <div class="process-item" data-sectors="automotive">
+            <span class="process-name">Stampaggio a iniezione di materie plastiche</span>
+            <span class="sector-tag">Automotive</span>
+          </div>
+          <div class="process-item" data-sectors="automotive energia">
+            <span class="process-name">Elettronica SMT e PTH, coating</span>
+            <span class="sector-tag">Auto · Energia</span>
+          </div>
+          <div class="process-item" data-sectors="energia ferroviario">
+            <span class="process-name">Componenti elettrici e conduttori in rame</span>
+            <span class="sector-tag">Energia · Rail</span>
+          </div>
+          <div class="process-item" data-sectors="automotive ferroviario energia">
+            <span class="process-name">Assemblaggio, imballo e logistica</span>
+            <span class="sector-tag">Tutti</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================ -->
+      <!-- 4. PROGETTI E RISULTATI                                           -->
+      <!-- ================================================================ -->
+      <section id="sec-progetti" class="story-section reveal">
+        <div class="section-header">
+          <span class="deck-brass">03 · Casi studio</span>
+          <h2 class="section-title">Tre incarichi e i loro <em>risultati</em></h2>
+          <p class="lede">
+            Metriche verificate sul campo in Italia, Europa e per committenza statunitense: certificazioni, salite produttive e abbattimento difetti.
+          </p>
+        </div>
+
+        <!-- Dedicated Illustration 4: Performance Telemetry Chart -->
+        <div class="illustration-well">
+          <svg class="sec-svg" viewBox="0 0 360 130" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <g stroke="#21304d" stroke-width="1">
+              <line x1="28" y1="20" x2="28" y2="104" />
+              <line x1="28" y1="104" x2="340" y2="104" />
+              <line x1="28" y1="62" x2="340" y2="62" stroke-dasharray="3 3" />
+            </g>
+            <!-- Defect reduction curve (coral -> mint) -->
+            <path class="svg-draw-line" d="M36,34 C95,38 145,74 220,86 C265,92 305,94 332,96" fill="none" stroke="#52d19c" stroke-width="2.2" />
+            <!-- Plant utilization ramp-up curve (gold) -->
+            <path class="svg-draw-line" d="M36,92 C95,88 155,58 220,38 C275,26 305,24 332,22" fill="none" stroke="#dfaa5b" stroke-width="2.2" />
+            <!-- Endpoints & direct labels -->
+            <circle cx="332" cy="22" r="4" fill="#dfaa5b" />
+            <circle cx="332" cy="96" r="4" fill="#52d19c" />
+            <g font-family="JetBrains Mono, monospace" font-size="8.5">
+              <text x="228" y="18" fill="#dfaa5b">UTILIZZO 20% → 80%</text>
+              <text x="234" y="116" fill="#52d19c">DIFETTI −60% · LEAD −50%</text>
+            </g>
+          </svg>
+          <div class="illustration-caption">
+            <span>FIG. 04 · IMPATTO OPERATIVO MISURATO</span>
+            <span>SERBIA · EUROPA · TOSCANA</span>
+          </div>
+        </div>
+
+        <div class="card-stack">
+          <!-- Project 1 -->
+          <article class="animated-card">
+            <div class="animated-card-inner">
+              <span class="coord-label">Serbia · 12 mesi</span>
+              <h3 class="card-title" style="margin-top: 4px;">Pasubio SpA, stabilimento in Serbia</h3>
+              <p class="card-body">
+                Consulente ISO 9001 e IATF 16949, in inglese, per lo stabilimento serbo di un gruppo italiano.
+              </p>
+              <div class="metric-pills">
+                <div class="metric-pill">
+                  <strong>1 anno</strong>
+                  <span>Certificazioni ISO 9001 &amp; IATF 16949</span>
+                </div>
+                <div class="metric-pill">
+                  <strong>6 nuovi clienti</strong>
+                  <span>Porsche, BMW, JLR, Lear, Faurecia, Grammer</span>
+                </div>
+                <div class="metric-pill">
+                  <strong>+110%</strong>
+                  <span>Organico da 120 a 250 persone</span>
+                </div>
+                <div class="metric-pill">
+                  <strong>20% → 80%</strong>
+                  <span>Utilizzo reparti su 6.000 m²</span>
+                </div>
+              </div>
+              <button type="button" class="expand-btn" aria-expanded="false" onclick="toggleExpand('proj-1', this)">
+                <span>Dettaglio intervento</span>
+                <span>+ Apri</span>
+              </button>
+              <div id="proj-1" class="expand-panel" hidden>
+                Ho guidato la crescita del personale verso le certificazioni, condotto audit interni e gestito l'operatività di stabilimento al fianco del top management serbo e italiano, avviando 2 nuovi processi (laminazione e perforazione della pelle) e riorganizzando reparti e uffici.
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 2 -->
+          <article class="animated-card delay-1">
+            <div class="animated-card-inner">
+              <span class="coord-label">Europa · 12 mesi</span>
+              <h3 class="card-title" style="margin-top: 4px;">Emer SpA (Westport Fuel Systems)</h3>
+              <p class="card-body">
+                Senior Supplier Quality Engineer per la supply chain europea nel passaggio dalla SOP alla mass production.
+              </p>
+              <div class="metric-pills">
+                <div class="metric-pill">
+                  <strong>13 audit</strong>
+                  <span>Audit di processo in tutta Europa in 6 mesi</span>
+                </div>
+                <div class="metric-pill">
+                  <strong>10 + 6</strong>
+                  <span>10 componenti critici, 6 prove contaminazione</span>
+                </div>
+                <div class="metric-pill">
+                  <strong>113 / 140</strong>
+                  <span>Non conformità chiuse con follow-up</span>
+                </div>
+                <div class="metric-pill">
+                  <strong>Anno 1</strong>
+                  <span>Salita produttiva completata</span>
+                </div>
+              </div>
+              <button type="button" class="expand-btn" aria-expanded="false" onclick="toggleExpand('proj-2', this)">
+                <span>Dettaglio intervento</span>
+                <span>+ Apri</span>
+              </button>
+              <div id="proj-2" class="expand-panel" hidden>
+                Audit di processo ai fornitori in tutta Europa condotti in inglese; revisione congiunta della documentazione tecnica tra la R&amp;D di Emer e i fornitori, con strutturazione della comunicazione e delle azioni di contenimento.
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 3 -->
+          <article class="animated-card delay-2">
+            <div class="animated-card-inner">
+              <span class="coord-label">Toscana · Cliente USA · 2024</span>
+              <h3 class="card-title" style="margin-top: 4px;">PPPL – UGT, committente americano</h3>
+              <p class="card-body">
+                Ispettore qualità residente presso un produttore italiano di conduttori in rame (confronto con progetto analogo precedente).
+              </p>
+              <div class="metric-pills">
+                <div class="metric-pill">
+                  <strong>6 mesi</strong>
+                  <span>Invece dei 12 mesi previsti</span>
+                </div>
+                <div class="metric-pill">
+                  <strong>−50%</strong>
+                  <span>Tempi di attraversamento e ore lavoro</span>
+                </div>
+                <div class="metric-pill">
+                  <strong>−60%</strong>
+                  <span>Difetti estetici e funzionali</span>
+                </div>
+                <div class="metric-pill">
+                  <strong>−50%</strong>
+                  <span>Visite ispettive dagli USA in Italia</span>
+                </div>
+              </div>
+              <button type="button" class="expand-btn" aria-expanded="false" onclick="toggleExpand('proj-3', this)">
+                <span>Dettaglio intervento</span>
+                <span>+ Apri</span>
+              </button>
+              <div id="proj-3" class="expand-panel" hidden>
+                Ruolo di ponte tecnico tra USA e Italia con netta riduzione dei conflitti cliente–fornitore; revisione della documentazione nei primi 2 mesi, ottimizzazione dei controlli in linea e condivisione in tempo reale dei rapporti di prova su Google Workspace.
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ================================================================ -->
+      <!-- 5. PERCORSO PROFESSIONALE                                         -->
+      <!-- ================================================================ -->
+      <section id="sec-percorso" class="story-section reveal">
+        <div class="section-header">
+          <span class="deck-brass">04 · Storia lavorativa</span>
+          <h2 class="section-title">Dalla linea di produzione alla <em>consulenza</em></h2>
+          <p class="lede">
+            Oltre trent'anni di esperienza industriale continua dal 1992 a oggi tra ufficio tecnico, direzione qualità, ambiente e consulenza internazionale.
+          </p>
+        </div>
+
+        <!-- Dedicated Illustration 5: Career Trajectory Meridian -->
+        <div class="illustration-well">
+          <svg class="sec-svg" viewBox="0 0 360 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <line x1="24" y1="68" x2="336" y2="28" stroke="#21304d" stroke-width="2" />
+            <path class="svg-draw-line" d="M24,68 L104,58 L184,48 L264,38 L336,28" fill="none" stroke="#dfaa5b" stroke-width="2.2" />
+            <circle cx="24" cy="68" r="4" fill="#7cc4e8" />
+            <circle cx="104" cy="58" r="4" fill="#7cc4e8" />
+            <circle cx="184" cy="48" r="4" fill="#7cc4e8" />
+            <circle cx="264" cy="38" r="4" fill="#dfaa5b" />
+            <circle cx="336" cy="28" r="5.5" fill="#dfaa5b" />
+            <g font-family="JetBrains Mono, monospace" font-size="8" fill="#9ba8bf">
+              <text x="16" y="86">1992</text>
+              <text x="90" y="86">1996</text>
+              <text x="170" y="86">2011</text>
+              <text x="250" y="86">2017</text>
+              <text x="314" y="86" fill="#dfaa5b">2026</text>
+            </g>
+          </svg>
+          <div class="illustration-caption">
+            <span>FIG. 05 · TRAIETTORIA 1992–2026</span>
+            <span>9 RUOLI IN FILIERA</span>
+          </div>
+        </div>
+
+        <div class="timeline-rail">
+          <div class="timeline-node">
+            <span class="timeline-period">Dic 2024 — oggi</span>
+            <h3 class="card-title">Formel D · Orbassano (TO)</h3>
+            <p class="card-body">Senior Quality Consultant freelance: supervisione di stabilimenti e operazioni produttive nella supply chain, dalla pianificazione alla logistica, prove e imballo.</p>
+          </div>
+          <div class="timeline-node">
+            <span class="timeline-period">Mar 2024 — Ott 2024</span>
+            <h3 class="card-title">PPPL – UGT (USA) · Toscana</h3>
+            <p class="card-body">Senior QC Mechanical Inspector freelance, ispettore qualità residente.</p>
+          </div>
+          <div class="timeline-node past">
+            <span class="timeline-period">Nov 2022 — Feb 2024</span>
+            <h3 class="card-title">Dragant Srl, Gruppo CORAL · Volpiano (TO)</h3>
+            <p class="card-body">Coordinatore qualità e produzione: controllo di prodotto e processo (saldatura), prove, assemblaggio e imballo.</p>
+          </div>
+          <div class="timeline-node past">
+            <span class="timeline-period">Mar 2021 — Mar 2022</span>
+            <h3 class="card-title">Effegi Elettronica · Vigone (TO)</h3>
+            <p class="card-body">Responsabile Qualità e Ambiente: SMT-PTH e coating, audit interni, reclami clienti e fornitori, APQP per nuovi prodotti.</p>
+          </div>
+          <div class="timeline-node past">
+            <span class="timeline-period">Nov 2019 — Mag 2020</span>
+            <h3 class="card-title">Mafalda Industries · Bricherasio (TO)</h3>
+            <p class="card-body">Quality Manager per clienti automotive e ferroviari: audit interni, qualifica fornitori, laboratorio.</p>
+          </div>
+          <div class="timeline-node past">
+            <span class="timeline-period">Nov 2017 — Nov 2019</span>
+            <h3 class="card-title">Coveract Consulting · Nichelino (TO)</h3>
+            <p class="card-body">Senior Supplier Quality Engineer Europe e consulente ISO 9001 / IATF 16949 (progetti Emer e Pasubio).</p>
+          </div>
+          <div class="timeline-node past">
+            <span class="timeline-period">Nov 2011 — Nov 2017</span>
+            <h3 class="card-title">KKK SpA · Brandizzo (TO)</h3>
+            <p class="card-body">Quality Manager con 3 collaboratori: sistema qualità, audit interni e ai fornitori, reclami, laboratorio e prove.</p>
+          </div>
+          <div class="timeline-node past">
+            <span class="timeline-period">1996 — 2006</span>
+            <h3 class="card-title">Endurance SpA · Lombardore (TO)</h3>
+            <p class="card-body">Responsabile Qualità e Ambiente con 7 collaboratori: sistema qualità e ambiente, industrializzazione (APQP), laboratorio.</p>
+          </div>
+          <div class="timeline-node past">
+            <span class="timeline-period">1992 — 1996</span>
+            <h3 class="card-title">Ellena SpA · Brandizzo (TO)</h3>
+            <p class="card-body">Impiegato dell'ufficio tecnico: gestione dei disegni tecnici, informatica, logistica, supporto agli acquisti e all'officina.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================ -->
+      <!-- 6. COMPETENZE, QUALIFICHE & CONDIZIONI                            -->
+      <!-- ================================================================ -->
+      <section id="sec-competenze" class="story-section reveal">
+        <div class="section-header">
+          <span class="deck-brass">05 · Norme, metodi &amp; attestati</span>
+          <h2 class="section-title">Strumenti tecnici e <em>qualifiche</em> certificate</h2>
+          <p class="lede">
+            Esplora le norme internazionali, i Core Tools e gli attestati ufficiali (ANFIA Service · VDA QMC · Campus Lab), più le condizioni operative.
+          </p>
+        </div>
+
+        <!-- Dedicated Illustration 6: Standards Hexagonal Matrix -->
+        <div class="illustration-well">
+          <svg class="sec-svg" viewBox="0 0 360 130" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <g class="svg-float">
+              <polygon points="180,18 222,42 222,88 180,112 138,88 138,42" fill="rgba(17,27,46,0.9)" stroke="#dfaa5b" stroke-width="1.6" />
+              <polygon points="180,30 211,48 211,82 180,100 149,82 149,48" fill="none" stroke="#7cc4e8" stroke-width="1" stroke-dasharray="4 3" />
+              <text x="180" y="63" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9.5" fill="#dfaa5b">ISO · IATF</text>
+              <text x="180" y="76" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="8" fill="#f2ece1">VDA 6.3</text>
+            </g>
+            <!-- Flanking nodes -->
+            <g stroke="#384d73" stroke-width="1">
+              <line x1="60" y1="44" x2="138" y2="54" />
+              <line x1="60" y1="86" x2="138" y2="76" />
+              <line x1="300" y1="44" x2="222" y2="54" />
+              <line x1="300" y1="86" x2="222" y2="76" />
+            </g>
+            <g font-family="JetBrains Mono, monospace" font-size="8" fill="#7cc4e8">
+              <text x="14" y="46">APQP · PPAP</text>
+              <text x="14" y="90">PFMEA · MSA</text>
+              <text x="262" y="46">8D · 5 WHY</text>
+              <text x="262" y="90">LEAN · PDCA</text>
+            </g>
+          </svg>
+          <div class="illustration-caption">
+            <span>FIG. 06 · MATRICE NORME &amp; CORE TOOLS</span>
+            <span>MASTER DIGITAL TRANSF. IN CORSO</span>
+          </div>
+        </div>
+
+        <!-- Interactive Competence Switcher -->
+        <div class="chip-group" role="group" aria-label="Categorie competenze">
+          <button type="button" class="filter-chip" aria-pressed="true" onclick="switchCompetence('norme', this)">Norme (12)</button>
+          <button type="button" class="filter-chip" aria-pressed="false" onclick="switchCompetence('core', this)">Core Tools (10)</button>
+          <button type="button" class="filter-chip" aria-pressed="false" onclick="switchCompetence('lean', this)">Lean &amp; Controllo</button>
+        </div>
+
+        <div id="comp-panel" class="animated-card" style="margin-top: var(--space-md);">
+          <div class="animated-card-inner" id="comp-content">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Certificates Table -->
+        <div class="animated-card delay-1" style="margin-top: var(--space-md);">
+          <div class="animated-card-inner">
+            <span class="coord-label">Qualifiche e attestati · copie disponibili su richiesta</span>
+            <div class="cert-table-wrap">
+              <table class="cert-table">
+                <thead>
+                  <tr>
+                    <th>Anno</th>
+                    <th>Qualifica &amp; Ente</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>2025</td>
+                    <td><strong>Auditor interno ambiente e sicurezza — ISO 14001:2015, ISO 45001:2018, ISO 19011:2018</strong>ANFIA Service · Attestato di superamento esame</td>
+                  </tr>
+                  <tr>
+                    <td>2025</td>
+                    <td><strong>Automotive Core Tools per auditor di processo e di sistema</strong>VDA QMC · ANFIA Service · Certificato di qualifica</td>
+                  </tr>
+                  <tr>
+                    <td>2025</td>
+                    <td><strong>Auditor di prima e seconda parte IATF 16949:2016 e ISO 9001:2015</strong>ANFIA Service · Attestato di superamento esame</td>
+                  </tr>
+                  <tr>
+                    <td>2019</td>
+                    <td><strong>Auditor di processo VDA 6.3</strong>VDA QMC · ANFIA Service · Certificato di qualifica</td>
+                  </tr>
+                  <tr>
+                    <td>2018</td>
+                    <td><strong>Auditor di prodotto VDA 6.5</strong>VDA QMC · ANFIA Service · Certificato di qualifica</td>
+                  </tr>
+                  <tr>
+                    <td>2018</td>
+                    <td><strong>VDA 2 e PPA — Garanzia della qualità delle forniture</strong>VDA QMC · ANFIA Service · Certificato di qualifica</td>
+                  </tr>
+                  <tr>
+                    <td>2013</td>
+                    <td><strong>Tecnologie CAD 3D</strong>Campus Lab · Attestato di frequenza</td>
+                  </tr>
+                  <tr>
+                    <td>2012</td>
+                    <td><strong>Tecnologie CAD 2D</strong>Campus Lab · Attestato di frequenza</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Condizioni operative -->
+        <div class="kpi-grid" style="margin-top: var(--space-md);">
+          <div class="animated-card">
+            <div class="animated-card-inner">
+              <span class="coord-label">Formula</span>
+              <p class="card-body" style="color: var(--on-surface); font-weight: 600;">Libero professionista</p>
+              <p class="kpi-caption">Partita IVA, a giornata o progetto con obiettivi concordati per iscritto.</p>
+            </div>
+          </div>
+          <div class="animated-card delay-1">
+            <div class="animated-card-inner">
+              <span class="coord-label">Contratti</span>
+              <p class="card-body" style="color: var(--on-surface); font-weight: 600;">Diretto o società</p>
+              <p class="kpi-caption">Incarichi diretti con l'azienda o tramite società di ingegneria.</p>
+            </div>
+          </div>
+          <div class="animated-card delay-2">
+            <div class="animated-card-inner">
+              <span class="coord-label">Mobilità</span>
+              <p class="card-body" style="color: var(--on-surface); font-weight: 600;">Sul posto</p>
+              <p class="kpi-caption">Base a Torino, trasferte e periodi da residente in Italia e all'estero.</p>
+            </div>
+          </div>
+          <div class="animated-card delay-3">
+            <div class="animated-card-inner">
+              <span class="coord-label">Lingue</span>
+              <p class="card-body" style="color: var(--on-surface); font-weight: 600;">Tre lingue</p>
+              <p class="kpi-caption">Italiano madrelingua, Inglese fluente (C1), Francese autonomo (B1).</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================ -->
+      <!-- 7. FAQ & CONTATTI                                                 -->
+      <!-- ================================================================ -->
+      <section id="sec-contatti" class="story-section reveal">
+        <div class="section-header">
+          <span class="deck-brass">06 · Chiarimenti e contatti</span>
+          <h2 class="section-title">Domande frequenti e <em>richiesta progetto</em></h2>
+          <p class="lede">
+            Indicatemi attività, stabilimento e tempistiche: rispondo rapidamente con una proposta chiara.
+          </p>
+        </div>
+
+        <!-- Dedicated Illustration 7: Torino <-> Europe/USA Quality Bridge -->
+        <div class="illustration-well">
+          <svg class="sec-svg" viewBox="0 0 360 115" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M56,78 Q180,14 304,64" fill="none" stroke="#21304d" stroke-width="2" />
+            <path class="svg-draw-line" d="M56,78 Q180,14 304,64" fill="none" stroke="#dfaa5b" stroke-width="2" />
+            <circle cx="56" cy="78" r="6" fill="rgba(223,170,91,0.22)" stroke="#dfaa5b" stroke-width="1.5" />
+            <circle cx="56" cy="78" r="2.5" fill="#dfaa5b" />
+            <circle cx="180" cy="45" r="4" fill="#7cc4e8" />
+            <circle cx="304" cy="64" r="6" fill="rgba(124,196,232,0.22)" stroke="#7cc4e8" stroke-width="1.5" />
+            <circle cx="304" cy="64" r="2.5" fill="#7cc4e8" />
+            <g font-family="JetBrains Mono, monospace" font-size="8.5" fill="#9ba8bf">
+              <text x="30" y="98" fill="#dfaa5b">TORINO (BASE)</text>
+              <text x="155" y="24" fill="#7cc4e8">EUROPA (C1)</text>
+              <text x="266" y="88" fill="#52d19c">COMMESSE USA/INT</text>
+            </g>
+          </svg>
+          <div class="illustration-caption">
+            <span>FIG. 07 · DISPONIBILITÀ ITALIA &amp; ESTERO</span>
+            <span>NDA E RISERVATEZZA GARANTITI</span>
+          </div>
+        </div>
+
+        <!-- FAQ Accordion -->
+        <div class="faq-list" role="region" aria-label="Domande frequenti">
+          <div class="faq-item">
+            <button type="button" class="faq-trigger" aria-expanded="false" onclick="toggleFaq(this)">
+              <span>Lavori solo nell'automotive?</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg>
+            </button>
+            <div class="faq-answer" hidden>
+              No. Lavoro anche nel ferroviario e nelle energie rinnovabili, su meccanica di precisione, elettronica, stampaggio plastico, saldatura, verniciatura, trattamenti termici e galvanici.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button type="button" class="faq-trigger" aria-expanded="false" onclick="toggleFaq(this)">
+              <span>Lavori anche all'estero e in inglese?</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg>
+            </button>
+            <div class="faq-answer" hidden>
+              Sì. La mia base è Torino e ho svolto audit ai fornitori in tutta Europa, in inglese (livello C1). Parlo anche francese (B1).
+            </div>
+          </div>
+          <div class="faq-item">
+            <button type="button" class="faq-trigger" aria-expanded="false" onclick="toggleFaq(this)">
+              <span>Con che formula e durata lavori?</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg>
+            </button>
+            <div class="faq-answer" hidden>
+              Come libero professionista con partita IVA: a progetto, a giornate o per un periodo definito, direttamente con l'azienda o tramite società di consulenza e ingegneria. Da pochi giorni (es. un audit fornitore) fino a progetti di 12 mesi come in Emer e Pasubio.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button type="button" class="faq-trigger" aria-expanded="false" onclick="toggleFaq(this)">
+              <span>Rilasci tu la certificazione?</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg>
+            </button>
+            <div class="faq-answer" hidden>
+              No, la certificazione la rilascia l'ente accreditato. Io preparo il sistema, conduco gli audit interni e formo il personale affinché l'azienda arrivi pronta all'audit dell'ente.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button type="button" class="faq-trigger" aria-expanded="false" onclick="toggleFaq(this)">
+              <span>Quanto costa e firmi accordi di riservatezza?</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9" /></svg>
+            </button>
+            <div class="faq-answer" hidden>
+              Il compenso dipende da attività, durata e trasferte: dopo un primo colloquio invio una proposta scritta. Sì, firmo regolarmente NDA e sono abituato a gestire informazioni riservate di clienti e fornitori.
+            </div>
+          </div>
+        </div>
+
+        <!-- Direct Contact Channels + Copy -->
+        <div class="card-stack" style="margin-top: var(--space-lg);">
+          <div class="contact-channel">
+            <div>
+              <span class="coord-label">Email diretta</span>
+              <div style="font-size: 0.95rem; color: var(--on-surface);">luciano@lucianocorso.it</div>
+            </div>
+            <button type="button" class="copy-mini-btn" onclick="copyText('luciano@lucianocorso.it', this)">Copia</button>
+          </div>
+          <div class="contact-channel">
+            <div>
+              <span class="coord-label">Telefono &amp; WhatsApp</span>
+              <div style="font-size: 0.95rem; color: var(--on-surface);">+39 339 549 0402</div>
+            </div>
+            <button type="button" class="copy-mini-btn" onclick="copyText('+39 339 549 0402', this)">Copia</button>
+          </div>
+          <div class="contact-channel">
+            <div>
+              <span class="coord-label">Profilo professionale</span>
+              <div style="font-size: 0.95rem; color: var(--on-surface);">LinkedIn · Luciano Corso</div>
+            </div>
+            <span class="sector-tag">Torino · IT/EN/FR</span>
+          </div>
+        </div>
+
+        <!-- Interactive Request Form -->
+        <div class="animated-card" style="margin-top: var(--space-lg);">
+          <div class="animated-card-inner">
+            <span class="deck-brass">Modulo richiesta consulenza</span>
+            <h3 class="card-title">Parliamo del vostro progetto</h3>
+
+            <form class="form-grid" onsubmit="submitContactForm(event)" novalidate>
+              <div class="field-group">
+                <label class="field-label" for="req-name">Nome e Azienda</label>
+                <input id="req-name" type="text" class="field-input" autocomplete="name" required>
+              </div>
+
+              <div class="field-group">
+                <label class="field-label" for="req-email">Email aziendale</label>
+                <input id="req-email" type="email" class="field-input" autocomplete="email" required>
+              </div>
+
+              <div class="field-group">
+                <label class="field-label" for="req-service">Tipo di attività</label>
+                <select id="req-service" class="field-select">
+                  <option value="Audit e qualifica fornitori (VDA 6.3)">Audit e qualifica fornitori (VDA 6.3)</option>
+                  <option value="Ispezione residente e witness test">Ispezione residente e witness test</option>
+                  <option value="Sistemi di gestione e certificazione (IATF / ISO)">Sistemi di gestione e certificazione (IATF / ISO)</option>
+                  <option value="Quality Manager temporaneo">Quality Manager temporaneo</option>
+                  <option value="Coaching, mentoring e training">Coaching, mentoring e training</option>
+                </select>
+              </div>
+
+              <div class="field-group">
+                <label class="field-label" for="req-details">Luogo, tempi e note operative</label>
+                <textarea id="req-details" class="field-textarea" required></textarea>
+              </div>
+
+              <button type="submit" class="btn-primary" style="width: 100%;">
+                Prepara richiesta di colloquio
+              </button>
+
+              <div id="form-feedback" class="form-feedback" role="status" aria-live="polite" hidden></div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        <span>© 2026 Luciano Corso · P.IVA 13072410015 · Base a Torino</span>
+        <span>Fonte: Dossier professionale Luciano Corso (lucianocorso.it) · I dati inseriti restano locali nella pagina.</span>
+      </footer>
+
+    </main>
+  </div>
+
+  <!-- Fixed Transparent Bottom Glassmorphism Navigation with SVG Icons -->
+  <nav class="bottom-nav" aria-label="Navigazione principale">
+    <button type="button" class="nav-item is-active" data-target="sec-hero" onclick="scrollToSection('sec-hero')">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="9" />
+        <polygon points="12 7 15 12 12 17 9 12" />
+      </svg>
+      <span>Profilo</span>
+    </button>
+    <button type="button" class="nav-item" data-target="sec-servizi" onclick="scrollToSection('sec-servizi')">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M9 11l3 3L22 4" />
+        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+      </svg>
+      <span>Servizi</span>
+    </button>
+    <button type="button" class="nav-item" data-target="sec-progetti" onclick="scrollToSection('sec-progetti')">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <line x1="18" y1="20" x2="18" y2="10" />
+        <line x1="12" y1="20" x2="12" y2="4" />
+        <line x1="6" y1="20" x2="6" y2="14" />
+      </svg>
+      <span>Progetti</span>
+    </button>
+    <button type="button" class="nav-item" data-target="sec-percorso" onclick="scrollToSection('sec-percorso')">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="9" />
+        <polyline points="12 7 12 12 15 14" />
+      </svg>
+      <span>Percorso</span>
+    </button>
+    <button type="button" class="nav-item" data-target="sec-contatti" onclick="scrollToSection('sec-contatti')">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+        <polyline points="22,6 12,13 2,6" />
+      </svg>
+      <span>Contatti</span>
+    </button>
+  </nav>
+
+  <script>
+    /* =====================================================================
+       1. Ambient Canvas Particle Field (Hero Telemetry)
+       ===================================================================== */
+    function initTelemetryCanvas() {
+      const canvas = document.getElementById('telemetry-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const rect = canvas.getBoundingClientRect();
+      const w = canvas.width = Math.max(300, Math.floor(rect.width || 420));
+      const h = canvas.height = Math.max(220, Math.floor(rect.height || 380));
+
+      const nodes = [];
+      const count = 18;
+      for (let i = 0; i < count; i++) {
+        nodes.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          vx: (Math.random() - 0.5) * 0.32,
+          vy: (Math.random() - 0.5) * 0.32,
+          r: i % 3 === 0 ? 2.1 : 1.3,
+          gold: i % 2 === 0
+        });
+      }
+
+      let animId = 0;
+      function drawFrame() {
+        ctx.clearRect(0, 0, w, h);
+
+        for (let i = 0; i < nodes.length; i++) {
+          const a = nodes[i];
+          if (!prefersReduced) {
+            a.x += a.vx;
+            a.y += a.vy;
+            if (a.x < 0 || a.x > w) a.vx *= -1;
+            if (a.y < 0 || a.y > h) a.vy *= -1;
+          }
+
+          for (let j = i + 1; j < nodes.length; j++) {
+            const b = nodes[j];
+            const dx = a.x - b.x;
+            const dy = a.y - b.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 92) {
+              ctx.beginPath();
+              ctx.strokeStyle = a.gold ? 'rgba(223, 170, 91, 0.16)' : 'rgba(124, 196, 232, 0.14)';
+              ctx.lineWidth = 0.8;
+              ctx.moveTo(a.x, a.y);
+              ctx.lineTo(b.x, b.y);
+              ctx.stroke();
+            }
+          }
+
+          ctx.beginPath();
+          ctx.fillStyle = a.gold ? 'rgba(223, 170, 91, 0.7)' : 'rgba(124, 196, 232, 0.65)';
+          ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        if (!prefersReduced) {
+          animId = requestAnimationFrame(drawFrame);
+        }
+      }
+
+      if (animId) cancelAnimationFrame(animId);
+      drawFrame();
+    }
+
+    /* =====================================================================
+       2. Navigation & Scroll Progress Ring
+       ===================================================================== */
+    function scrollToSection(id) {
+      const target = document.getElementById(id);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      setActiveNav(id);
+    }
+
+    function setActiveNav(targetId) {
+      const items = document.querySelectorAll('.nav-item');
+      items.forEach(function (btn) {
+        const isMatch = btn.getAttribute('data-target') === targetId;
+        btn.classList.toggle('is-active', isMatch);
+      });
+    }
+
+    function updateScrollProgress() {
+      const ring = document.getElementById('scroll-ring-fill');
+      const label = document.getElementById('scroll-pct-label');
+      if (!ring || !label) return;
+      const docHeight = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      const pct = Math.min(100, Math.max(0, Math.round((window.scrollY / docHeight) * 100)));
+      const circumference = 50.26;
+      ring.style.strokeDashoffset = String(circumference - (circumference * pct) / 100);
+      label.textContent = pct + '%';
+    }
+
+    function initObservers() {
+      if (typeof IntersectionObserver === 'undefined') {
+        document.querySelectorAll('.reveal').forEach(function (el) {
+          el.classList.add('is-visible');
+        });
+        return;
+      }
+
+      const revealObs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            revealObs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.08 });
+
+      document.querySelectorAll('.reveal').forEach(function (el) {
+        revealObs.observe(el);
+      });
+
+      const navSections = ['sec-hero', 'sec-servizi', 'sec-progetti', 'sec-percorso', 'sec-contatti'];
+      const navObs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            setActiveNav(entry.target.id);
+          }
+        });
+      }, { rootMargin: '-35% 0px -50% 0px', threshold: 0 });
+
+      navSections.forEach(function (id) {
+        const sec = document.getElementById(id);
+        if (sec) navObs.observe(sec);
+      });
+    }
+
+    /* =====================================================================
+       3. Interactive 1-Minute Service Diagnostic
+       ===================================================================== */
+    const diagState = {
+      need: 'fornitori',
+      duration: 'giorni'
+    };
+
+    const diagMap = {
+      fornitori: {
+        giorni: {
+          service: `01 · Audit e qualifica fornitori (VDA 6.3)`,
+          note: `Intervento mirato a giornata su uno o più fornitori in Italia o Europa: audit di processo, gestione reclami e verifica chiusure in stabilimento.`
+        },
+        mesi: {
+          service: `01 · Audit e qualifica fornitori + Follow-up Supply Chain`,
+          note: `Programma multi-mese di audit ai fornitori, supporto APQP e contenimento non conformità dal lancio (SOP) alla produzione di serie.`
+        }
+      },
+      residente: {
+        giorni: {
+          service: `02 · Witness test e ispezione puntuale`,
+          note: `Presenza dedicata durante test di laboratorio, collaudi o imballi con rapporto tecnico immediato, ideale anche per committenti esteri.`
+        },
+        mesi: {
+          service: `02 · Ispezione residente in stabilimento`,
+          note: `Presidio continuativo dal fornitore italiano: ottimizzazione controlli, riduzione tempi di attraversamento e dialogo diretto con la committenza.`
+        }
+      },
+      certificazione: {
+        giorni: {
+          service: `03 · Audit interni ISO / IATF e gap analysis`,
+          note: `Audit interno indipendente su ISO 9001, IATF 16949, ISO 14001 o ISO 45001 per individuare scostamenti prima della visita dell'ente.`
+        },
+        mesi: {
+          service: `03 · Impostazione Sistema di Gestione & Certificazione`,
+          note: `Percorso completo fino all'audit di certificazione dell'ente: procedure, audit interni, formazione del personale e temi ESG.`
+        }
+      },
+      manager: {
+        giorni: {
+          service: `04 · Supporto Quality Manager su criticità urgenti`,
+          note: `Affiancamento immediato su reclami clienti (8D), sblocco spedizioni o preparazione attrezzature di prova.`
+        },
+        mesi: {
+          service: `04 · Quality Manager temporaneo in stabilimento`,
+          note: `Copertura integrale del ruolo di responsabile qualità o coordinamento qualità e produzione, inclusi APQP nuovi prodotti e laboratorio.`
+        }
+      },
+      team: {
+        giorni: {
+          service: `05 · Training intensivo su Core Tools o Audit`,
+          note: `Sessioni pratiche in azienda su PFMEA, MSA, SPC, 8D o preparazione agli audit di processo.`
+        },
+        mesi: {
+          service: `05 · Coaching e mentoring continuo in reparto`,
+          note: `Affiancamento sul campo di quality engineer e capi reparto per consolidare autonomia metodologica e lettura dei KPI.`
+        }
+      }
+    };
+
+    function setDiag(key, value, btn) {
+      diagState[key] = value;
+      const group = btn ? btn.parentElement : null;
+      if (group) {
+        group.querySelectorAll('.filter-chip').forEach(function (c) {
+          c.setAttribute('aria-pressed', c === btn ? 'true' : 'false');
+        });
+      }
+      renderDiagnostic();
+    }
+
+    function renderDiagnostic() {
+      const out = document.getElementById('diag-output');
+      if (!out) return;
+      const rec = diagMap[diagState.need][diagState.duration];
+      out.innerHTML = '';
+
+      const tag = document.createElement('span');
+      tag.className = 'coord-label';
+      tag.textContent = 'Consiglio operativo';
+
+      const title = document.createElement('h4');
+      title.style.margin = '4px 0 6px';
+      title.style.fontFamily = 'var(--font-headline)';
+      title.style.fontSize = '1.2rem';
+      title.style.color = 'var(--primary)';
+      title.textContent = rec.service;
+
+      const p = document.createElement('p');
+      p.style.margin = '0 0 10px';
+      p.style.fontSize = '0.88rem';
+      p.style.color = 'var(--on-surface-variant)';
+      p.textContent = rec.note;
+
+      const cta = document.createElement('button');
+      cta.type = 'button';
+      cta.className = 'btn-secondary';
+      cta.textContent = 'Precompila richiesta con questo servizio';
+      cta.onclick = function () {
+        const select = document.getElementById('req-service');
+        if (select) {
+          const mapIdx = { fornitori: 0, residente: 1, certificazione: 2, manager: 3, team: 4 };
+          select.selectedIndex = mapIdx[diagState.need] || 0;
+        }
+        scrollToSection('sec-contatti');
+      };
+
+      out.appendChild(tag);
+      out.appendChild(title);
+      out.appendChild(p);
+      out.appendChild(cta);
+    }
+
+    /* =====================================================================
+       4. Process Filter
+       ===================================================================== */
+    function filterProcesses(sector, btn) {
+      const group = btn ? btn.parentElement : null;
+      if (group) {
+        group.querySelectorAll('.filter-chip').forEach(function (c) {
+          c.setAttribute('aria-pressed', c === btn ? 'true' : 'false');
+        });
+      }
+      const items = document.querySelectorAll('#process-list .process-item');
+      let visible = 0;
+      items.forEach(function (item) {
+        const sectors = item.getAttribute('data-sectors') || '';
+        const show = sector === 'tutti' || sectors.indexOf(sector) !== -1;
+        item.classList.toggle('is-hidden', !show);
+        if (show) visible++;
+      });
+      const lbl = document.getElementById('process-count-label');
+      if (lbl) lbl.textContent = visible + ' processi attivi';
+    }
+
+    /* =====================================================================
+       5. Case Study Expanders & FAQ Accordion
+       ===================================================================== */
+    function toggleExpand(panelId, btn) {
+      const panel = document.getElementById(panelId);
+      if (!panel || !btn) return;
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+      panel.hidden = expanded;
+      const spans = btn.querySelectorAll('span');
+      if (spans.length >= 2) {
+        spans[1].textContent = expanded ? '+ Apri' : '− Chiudi';
+      }
+    }
+
+    function toggleFaq(btn) {
+      if (!btn) return;
+      const answer = btn.nextElementSibling;
+      if (!answer) return;
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+      answer.hidden = expanded;
+    }
+
+    /* =====================================================================
+       6. Competences Switcher
+       ===================================================================== */
+    const competencesData = {
+      norme: {
+        label: `12 standard internazionali`,
+        items: [
+          { text: `IATF 16949`, gold: true },
+          { text: `ISO 9001`, gold: true },
+          { text: `ISO 14001`, gold: true },
+          { text: `ISO 45001`, gold: true },
+          { text: `VDA 6.3`, gold: true },
+          { text: `VDA 6.5`, gold: false },
+          { text: `VDA 2`, gold: false },
+          { text: `IRIS ISO 22163`, gold: false },
+          { text: `ISO 17025`, gold: false },
+          { text: `ISO 27001`, gold: false },
+          { text: `ISO/SAE 21434`, gold: false },
+          { text: `IPC-A-610`, gold: false }
+        ]
+      },
+      core: {
+        label: `Core Tools e Problem Solving`,
+        items: [
+          { text: `APQP`, gold: true },
+          { text: `PPAP`, gold: true },
+          { text: `PFMEA`, gold: true },
+          { text: `MSA`, gold: false },
+          { text: `SPC`, gold: false },
+          { text: `LPA`, gold: false },
+          { text: `8D`, gold: true },
+          { text: `5 Why`, gold: false },
+          { text: `Ishikawa`, gold: false },
+          { text: `Risk based thinking`, gold: false }
+        ]
+      },
+      lean: {
+        label: `Lean, Controllo e Approccio`,
+        items: [
+          { text: `Lean Production`, gold: true },
+          { text: `5S · Kaizen · PDCA`, gold: true },
+          { text: `KPI & Process Improvement`, gold: false },
+          { text: `Ispezione visiva & aspetto estetico`, gold: false },
+          { text: `CND · ISO 9712 liv. 1`, gold: true },
+          { text: `Pulizia tecnica e contaminazione`, gold: false },
+          { text: `Strumenti di misura`, gold: false },
+          { text: `CAD 2D / 3D`, gold: false },
+          { text: `Witness & Expediting`, gold: true },
+          { text: `Master Industrial Mgmt & Digital Transformation (in corso)`, gold: true }
+        ]
+      }
+    };
+
+    function switchCompetence(key, btn) {
+      const group = btn ? btn.parentElement : null;
+      if (group) {
+        group.querySelectorAll('.filter-chip').forEach(function (c) {
+          c.setAttribute('aria-pressed', c === btn ? 'true' : 'false');
+        });
+      }
+      const box = document.getElementById('comp-content');
+      const data = competencesData[key];
+      if (!box || !data) return;
+
+      box.innerHTML = '';
+      const lbl = document.createElement('span');
+      lbl.className = 'coord-label';
+      lbl.textContent = data.label;
+      box.appendChild(lbl);
+
+      const cloud = document.createElement('div');
+      cloud.className = 'badge-cloud';
+      data.items.forEach(function (item) {
+        const chip = document.createElement('span');
+        chip.className = item.gold ? 'spec-badge gold' : 'spec-badge';
+        chip.textContent = item.text;
+        cloud.appendChild(chip);
+      });
+      box.appendChild(cloud);
+    }
+
+    /* =====================================================================
+       7. Copy & Contact Request Builder
+       ===================================================================== */
+    function copyText(value, btn) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(value).catch(function () {});
+      }
+      if (btn) {
+        const orig = btn.textContent;
+        btn.textContent = 'Copiato';
+        setTimeout(function () {
+          btn.textContent = orig;
+        }, 1600);
+      }
+    }
+
+    function submitContactForm(event) {
+      event.preventDefault();
+      const nameEl = document.getElementById('req-name');
+      const emailEl = document.getElementById('req-email');
+      const serviceEl = document.getElementById('req-service');
+      const detailsEl = document.getElementById('req-details');
+      const fb = document.getElementById('form-feedback');
+      if (!nameEl || !emailEl || !serviceEl || !detailsEl || !fb) return;
+
+      const name = nameEl.value.trim();
+      const email = emailEl.value.trim();
+      const details = detailsEl.value.trim();
+
+      if (name.length < 2 || email.indexOf('@') === -1 || details.length < 10) {
+        fb.hidden = false;
+        fb.className = 'form-feedback is-error';
+        fb.textContent = `Compila Nome/Azienda, un indirizzo email valido e almeno 10 caratteri su luogo e tempi dell'intervento.`;
+        return;
+      }
+
+      fb.hidden = false;
+      fb.className = 'form-feedback is-success';
+      fb.textContent = `Riepilogo pronto per ${name} (${serviceEl.value}). Invia questi dettagli a luciano@lucianocorso.it o al +39 339 549 0402 per fissare il primo colloquio.`;
+    }
+
+    /* =====================================================================
+       Boot
+       ===================================================================== */
+    document.addEventListener('DOMContentLoaded', function () {
+      initTelemetryCanvas();
+      renderDiagnostic();
+      switchCompetence('norme', null);
+      initObservers();
+      updateScrollProgress();
+    });
+    window.addEventListener('scroll', updateScrollProgress, { passive: true });
+  </script>
+</body>
+</html>
